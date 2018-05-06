@@ -321,9 +321,9 @@
                     <span>AlexNet对花朵图像分类</span>
             </a>
             <div class="abstract-content">
-                AlexNet对花朵图像分类本文基于Tensorflow使用ALexNet的网络结构实现了对oxflowers数据集上的花朵图像分类。
+                本文基于Tensorflow使用ALexNet的网络结构实现了对oxflowers数据集上的花朵图像分类。
 CNN搭建数据读入本部分目的是实现oxflowers的数据读入，并分割为训练集和测试集。从如下数据连接下载源数据并阅读数据说明。数据集包含1360张花朵的图片，按顺序每80个为一类，总计17类。首先要对数据集分割并加上标签，之后用PIL包的Image函数将图片读为张量，根据数据集中的datasplits.mat将数据集分割为训练集和测试集，最后定义shuffle的规则方便分批训练。代码以及详尽的注释在LoadData.py
-AlexNet本部分着重介绍A...
+AlexNet本部分着重介绍AlexNet网络的结构。Al...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
@@ -349,9 +349,9 @@ AlexNet本部分着重介绍A...
                     <span>部落格搭建指南</span>
             </a>
             <div class="abstract-content">
-                部落格搭建指南之所以复古地开博客，最大的动力是想在科研时做好总结，这自然也是一种鞭策。此外，便是能分享些文字图片，也是种“存在着”的有力佐证。总归，博士生涯仅剩三年，容不得任何浑浑噩噩了。
+                之所以复古地开博客，最大的动力是想在科研时做好总结，这自然也是一种鞭策。此外，便是能分享些文字图片，也是种“存在着”的有力佐证。总归，博士生涯仅剩三年，容不得任何浑浑噩噩了。
 其实之前用Github上的Jkyll模板搭过博客，只是搭过也没用过。现在从头盖个房子，也是因为觉得用Hexo更美观，至于好用与否我就不得而知了。直观感觉用Hexo是更方便的，好歹不用Github客户端一直同步。
-搭建的过程参照这篇《Mac上搭建基于Github的Hexo博客》，可以说很详尽了。主题我用的是fi3ework制作的主题，换主题是件很麻烦的事，所以建议后来者像巫师选魔杖般郑重选择自己的主题，...
+搭建的过程参照这篇《Mac上搭建基于Github的Hexo博客》，可以说很详尽了。主题我用的是fi3ework制作的主题，换主题是件很麻烦的事，所以建议后来者像巫师选魔杖般郑重选择自己的主题，搭好之后呢就少...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
@@ -390,6 +390,12 @@ More...
                 </div>
                 <!-- tags  -->
                 
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "指南">指南</a>
+    
+</div>
+                
             </div>
         </article>
     
@@ -417,13 +423,6 @@ More...
             
         
     
-        
-            
-                <span class="iconfont-archer wechat" title=wechat>
-                  
-                  <img class="profile-qr" src="/assets/qr.jpg" />
-                </span>
-            
         
     
         
@@ -480,8 +479,6 @@ More...
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
     
     
     

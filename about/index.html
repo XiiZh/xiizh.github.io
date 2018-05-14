@@ -70,7 +70,7 @@
 
     <link rel="preload" href= /css/style.css?v=20180501 as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <link rel="stylesheet" href= /css/mobile.css?v=20180501 media="(max-width: 980px)">
-        
+    
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -313,7 +313,9 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h2 id="This-is-Ground-Control"><a href="#This-is-Ground-Control" class="headerlink" title="This is Ground Control"></a>This is Ground Control</h2><h2 id="To-Major-Tom"><a href="#To-Major-Tom" class="headerlink" title="To Major Tom"></a>To Major Tom</h2>
+        <h2 id="this-is-ground-control"><a class="markdownIt-Anchor" href="#this-is-ground-control"></a> This is Ground Control</h2>
+<h2 id="to-major-tom"><a class="markdownIt-Anchor" href="#to-major-tom"></a> To Major Tom</h2>
+
     </article>
     <!-- license  -->
     
@@ -442,7 +444,18 @@
     
     
     
-    <div class="total-archive"> Total : 3 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 4 </div>
     
     <div class="post-archive">
     
@@ -454,12 +467,17 @@
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">05/14</span><a class="archive-post-title" href= "/2018/05/14/IPSW_2018/" >Model Selection for Clustering Algorithm</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">05/06</span><a class="archive-post-title" href= "/2018/05/06/AlexNet/" >AlexNet对花朵图像分类</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">05/06</span><a class="archive-post-title" href= "/2018/05/06/博客搭建指南/" >部落格搭建指南</a>
+            <span class="archive-post-date">05/06</span><a class="archive-post-title" href= "/2018/05/06/How_To_Build_A_Blog/" >部落格搭建指南</a>
         </li>
     
     
@@ -472,9 +490,11 @@
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name" data-tags="指南"><span class="iconfont-archer">&#xe606;</span>指南</span>
+    
         <span class="sidebar-tag-name" data-tags="tensorflow"><span class="iconfont-archer">&#xe606;</span>tensorflow</span>
     
-        <span class="sidebar-tag-name" data-tags="指南"><span class="iconfont-archer">&#xe606;</span>指南</span>
+        <span class="sidebar-tag-name" data-tags="Project"><span class="iconfont-archer">&#xe606;</span>Project</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -532,7 +552,22 @@ jsonContent:
     </div>
     <!-- async load share.js -->
     
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
 </html>
 
 

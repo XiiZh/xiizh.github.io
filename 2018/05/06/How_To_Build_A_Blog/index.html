@@ -15,7 +15,7 @@
     <meta name="description" content="">
     <meta name="Cache-Control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>AlexNet对花朵图像分类 · XiiZh&#39;s Studio</title>
+    <title>部落格搭建指南 · XiiZh&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -207,7 +207,7 @@
                 <a href="/" >XiiZh&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">AlexNet对花朵图像分类</a>
+                <a href="#" class="post-name">部落格搭建指南</a>
             </div>
     </div>
     
@@ -239,7 +239,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            AlexNet对花朵图像分类
+            部落格搭建指南
             <!-- 404 -->
             
         </h1>
@@ -257,7 +257,7 @@ height:50vh;
             
                 <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "tensorflow">tensorflow</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "指南">指南</a>
     
 </div>
             
@@ -369,63 +369,45 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>本文基于Tensorflow使用ALexNet的网络结构实现了对oxflowers数据集上的花朵图像分类。</p>
-<h2 id="cnn搭建"><a class="markdownIt-Anchor" href="#cnn搭建"></a> CNN搭建</h2>
-<h3 id="数据读入"><a class="markdownIt-Anchor" href="#数据读入"></a> 数据读入</h3>
-<p>本部分目的是实现oxflowers的数据读入，并分割为训练集和测试集。从如下<a href="http://www.robots.ox.ac.uk/~vgg/data/flowers/17" target="_blank" rel="noopener">数据连接</a>下载源数据并阅读数据说明。数据集包含1360张花朵的图片，按顺序每80个为一类，总计17类。首先要对数据集分割并加上标签，之后用PIL包的Image函数将图片读为张量，根据数据集中的datasplits.mat将数据集分割为训练集和测试集，最后定义shuffle的规则方便分批训练。代码以及详尽的注释在<a href="https://github.com/alpoise/DeepLearning/blob/master/HW2/loadData.py" target="_blank" rel="noopener">LoadData.py</a></p>
-<h3 id="alexnet"><a class="markdownIt-Anchor" href="#alexnet"></a> AlexNet</h3>
-<p>本部分着重介绍AlexNet网络的结构。AlexNet的详细分析可以参见这篇<a href="https://blog.csdn.net/zyqdragon/article/details/72353420" target="_blank" rel="noopener">博客</a>，作为卷积神经网络的一种特殊形式，它首先用三层“卷积—ReLU—池化—LRN”的结构提取特征，其中Local Response Normalization (LRN)是<a href="http://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks" target="_blank" rel="noopener">AlexNet</a>2012年首次提出来的，然后再搭建三个全连接层得到输出，具体结构见下图。</p>
-<img src="https://raw.githubusercontent.com/alpoise/alpoise.github.io/master/_plugins/jpg/AlexNet.png" width="80%" height="80%">
-<p>注意原始网络的最终输出是1000维的one-hot向量，对应着数据集是1000个标签，且网络在提取特征的时候都是分割成两两部分便于在两个GPU上计算，本文区别于原始网络的点在于最终输出是17维的one-hot且没有分割成两部分进行计算。</p>
-<p>本网络用到了CNN中的stride，padding，pooling，dropout等概念，此外一个技巧是在训练MLP加入L2惩罚有助于提高精度，参见Tensorlayer的<a href="https://github.com/tensorlayer/tensorlayer/blob/master/example/tutorial_cifar10.py" target="_blank" rel="noopener">说明文档</a>，网络部分的代码见<a href="https://github.com/alpoise/DeepLearning/blob/master/HW2/AlexNet.py" target="_blank" rel="noopener">AlexNet.py</a>.</p>
-<h3 id="训练方式"><a class="markdownIt-Anchor" href="#训练方式"></a> 训练方式</h3>
-<p>网络的训练就是分成batch训练，比较复杂的是加了很多summary以方便可视化，代码见<a href="https://github.com/alpoise/DeepLearning/blob/master/HW2/train.py" target="_blank" rel="noopener">train.py</a>.</p>
-<h2 id="tensorboard"><a class="markdownIt-Anchor" href="#tensorboard"></a> Tensorboard</h2>
-<p>Tensorboard的坑是始料未及的。基本的操作是在代码中加入summary，并tf.summary.Filewriter下来，这些网上的教程都有提到，但有两点没提到的需要注意：</p>
-<ul>
-<li>现在不会自动弹出网页地址，需要自行在Chrome浏览器中输入http://localhost:6006。</li>
-<li>指令为在命令行中输入tensorboard --logdir [总结文件events的上层文件夹地址]。但是却一直报错，而错误的原因最后发现是自己的主机名字取得不好，导致events的后缀名是&quot;.alpoise’s_PC ”可能是单引号为汉字字符，也可能单引号本身就与字符串矛盾，总归把电脑改名为<strong>dormpc</strong>后顺利运行。</li>
-</ul>
-<h2 id="结果分析"><a class="markdownIt-Anchor" href="#结果分析"></a> 结果分析</h2>
-<p>我们训练了80个epoch，每30步在测试集上进行一次测试。由于是在本人的台式机上使用GPU GTX970训练的，所以80个epoch大致只需要15分钟。首先来看训练集上的表现：</p>
-<img src="https://raw.githubusercontent.com/alpoise/alpoise.github.io/master/_plugins/jpg/alextrain.png" width="70%" height="30%">
-<p>从loss的下降可以看到Adam优化器在本问题是十分有效的，但是样本内的准确度在1200步之后就几乎为1了，这很可能意味着过拟合。我们接着来看在测试集上的表现：</p>
-<img src="https://raw.githubusercontent.com/alpoise/alpoise.github.io/master/_plugins/jpg/alextest.png" width="65%" height="30%">
-<p>测试集上最终准确率只有**70%**左右，考虑到样本集容量非常有限，所以这个精度还是不错的。如果采用预训练给出的参数对模型初始化可以进一步提高预测力，但已经与本实验初衷有些远，暂且不表。此外，在实验过程中也有尝试对网络结构进行一些修改，如全连接的最后一层节点数是从1000到17等，效果并没有改观作为中间过程也就没有记录。</p>
-<h2 id="待解决项"><a class="markdownIt-Anchor" href="#待解决项"></a> 待解决项</h2>
-<p>变量总结的INFO对变量b3:0让修改为b3_0，summary name is illegal;</p>
-<ul>
-<li>对TF的变量名管理和tf.summary还不算会，还是照猫画虎的阶段;</li>
-<li>在尝试把dense层也用函数封装后，再调用变量L2_loss时没效果，猜测还是变量调用的问题;</li>
-<li>debug时修改图全局变量的方式，能节约loaddata的时间。</li>
-</ul>
-<p>关键是搞懂tf.Variable和tf.summary.</p>
+        <p>之所以复古地开博客，最大的动力是想在科研时做好总结，这自然也是一种鞭策。此外，便是能分享些文字图片，也是种“存在着”的有力佐证。总归，博士生涯仅剩三年，容不得任何浑浑噩噩了。</p>
+<p>其实之前用Github上的Jkyll模板搭过博客，只是搭过也没用过。现在从头盖个房子，也是因为觉得用Hexo更美观，至于好用与否我就不得而知了。直观感觉用Hexo是更方便的，好歹不用Github客户端一直同步。</p>
+<p>搭建的过程参照这篇<a href="https://www.jianshu.com/p/13e64c9e2295" target="_blank" rel="noopener">《Mac上搭建基于Github的Hexo博客》</a>，可以说很详尽了。主题我用的是<a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank" rel="noopener">fi3ework</a>制作的主题，换主题是件很麻烦的事，所以建议后来者像巫师选魔杖般郑重选择自己的主题，搭好之后呢就少折腾形式，多注重内容。</p>
+<p>共勉。</p>
+<h2 id="0515更新"><a class="markdownIt-Anchor" href="#0515更新"></a> 0515更新</h2>
+<p>今天在输入数学公式时发现hexo对数学公式支持很差。前前后后看了些都没一次性解决，不知道是不是跟主题还有关系，最后用的这个<a href="https://blog.csdn.net/u014630987/article/details/78670258" target="_blank" rel="noopener">博文</a>的方法，但是我只走得通这里的第三步，然后发现基本可以了。虽然在此之前我也用了其他几个博文的方法，所以我也不知道最后自己怎么弄得差不多好的。</p>
+<p>需要注意的是并不能特别好的支持latex 比如公式里的bold啊什么的还没搞清楚，此外就是双$符号不能直接用公式，用\begin{equation}或者\begin{eqndarray}包括就行了。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">\begin&#123;eqnarray&#125;</span><br><span class="line">\nabla\cdot\vec&#123;E&#125; &amp;=&amp; \frac&#123;\rho&#125;&#123;\epsilon_0&#125; \\</span><br><span class="line">\nabla\cdot\vec&#123;B&#125; &amp;=&amp; 0 \\</span><br><span class="line">\nabla\times\vec&#123;E&#125; &amp;=&amp; -\frac&#123;\partial B&#125;&#123;\partial t&#125; \\</span><br><span class="line">\nabla\times\vec&#123;B&#125; &amp;=&amp; \mu_0\left(\vec&#123;J&#125;+\epsilon_0\frac&#123;\partial E&#125;&#123;\partial t&#125; \right)</span><br><span class="line">\end&#123;eqnarray&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>的输出是：</p>
+\begin{eqnarray}
+\nabla\cdot\vec{E} &=& \frac{\rho}{\epsilon_0} \\
+\nabla\cdot\vec{B} &=& 0 \\
+\nabla\times\vec{E} &=& -\frac{\partial B}{\partial t} \\
+\nabla\times\vec{B} &=& \mu_0\left(\vec{J}+\epsilon_0\frac{\partial E}{\partial t} \right)
+\end{eqnarray}
+
+<p>所以现在还是建议后来者选主题的时候再三思一下。毕竟，是吧，</p>
+<blockquote>
+<p>Because every beauty has its pay.</p>
+</blockquote>
 
     </article>
     <!-- license  -->
-    
-        <div class="license-wrapper">
-            <p>原文作者: <a href="http://xiizh.github.io">Zhang Xin</a>
-            <p>原文链接: <a href="http://xiizh.github.io/2018/05/06/AlexNet/">http://xiizh.github.io/2018/05/06/AlexNet/</a>
-            <p>发表日期: <a href="http://xiizh.github.io/2018/05/06/AlexNet/">May 6th 2018, 8:00:00</a>
-            <p>版权声明: 本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
-        </div>
     
     <!-- paginator  -->
     <ul class="post-paginator">
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/05/14/IPSW_2018/" title= Model Selection for Clustering Algorithm >
-                    <div class="nextTitle">Model Selection for Clustering Algorithm</div>
+                <a href= "/2018/05/06/AlexNet/" title= AlexNet对花朵图像分类 >
+                    <div class="nextTitle">AlexNet对花朵图像分类</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/05/06/How_To_Build_A_Blog/" title= 部落格搭建指南 >
-                    <div class="prevTitle">部落格搭建指南</div>
+                <a href= "/2018/05/05/hello-world/" title= Hello World >
+                    <div class="prevTitle">Hello World</div>
                 </a>
             
         </li>
@@ -526,7 +508,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#cnn搭建"><span class="toc-number">1.</span> <span class="toc-text"> CNN搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据读入"><span class="toc-number">1.1.</span> <span class="toc-text"> 数据读入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#alexnet"><span class="toc-number">1.2.</span> <span class="toc-text"> AlexNet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#训练方式"><span class="toc-number">1.3.</span> <span class="toc-text"> 训练方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tensorboard"><span class="toc-number">2.</span> <span class="toc-text"> Tensorboard</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结果分析"><span class="toc-number">3.</span> <span class="toc-text"> 结果分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#待解决项"><span class="toc-number">4.</span> <span class="toc-text"> 待解决项</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0515更新"><span class="toc-number">1.</span> <span class="toc-text"> 0515更新</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

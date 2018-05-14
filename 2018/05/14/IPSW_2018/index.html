@@ -15,7 +15,7 @@
     <meta name="description" content="">
     <meta name="Cache-Control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>AlexNet对花朵图像分类 · XiiZh&#39;s Studio</title>
+    <title>Model Selection for Clustering Algorithm · XiiZh&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -207,7 +207,7 @@
                 <a href="/" >XiiZh&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">AlexNet对花朵图像分类</a>
+                <a href="#" class="post-name">Model Selection for Clustering Algorithm</a>
             </div>
     </div>
     
@@ -239,7 +239,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            AlexNet对花朵图像分类
+            Model Selection for Clustering Algorithm
             <!-- 404 -->
             
         </h1>
@@ -257,13 +257,13 @@ height:50vh;
             
                 <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "tensorflow">tensorflow</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Project">Project</a>
     
 </div>
             
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/05/06</span>
+                <span class="post-intro-time">2018/05/14</span>
                 
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe602;</span>
@@ -369,45 +369,74 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>本文基于Tensorflow使用ALexNet的网络结构实现了对oxflowers数据集上的花朵图像分类。</p>
-<h2 id="cnn搭建"><a class="markdownIt-Anchor" href="#cnn搭建"></a> CNN搭建</h2>
-<h3 id="数据读入"><a class="markdownIt-Anchor" href="#数据读入"></a> 数据读入</h3>
-<p>本部分目的是实现oxflowers的数据读入，并分割为训练集和测试集。从如下<a href="http://www.robots.ox.ac.uk/~vgg/data/flowers/17" target="_blank" rel="noopener">数据连接</a>下载源数据并阅读数据说明。数据集包含1360张花朵的图片，按顺序每80个为一类，总计17类。首先要对数据集分割并加上标签，之后用PIL包的Image函数将图片读为张量，根据数据集中的datasplits.mat将数据集分割为训练集和测试集，最后定义shuffle的规则方便分批训练。代码以及详尽的注释在<a href="https://github.com/alpoise/DeepLearning/blob/master/HW2/loadData.py" target="_blank" rel="noopener">LoadData.py</a></p>
-<h3 id="alexnet"><a class="markdownIt-Anchor" href="#alexnet"></a> AlexNet</h3>
-<p>本部分着重介绍AlexNet网络的结构。AlexNet的详细分析可以参见这篇<a href="https://blog.csdn.net/zyqdragon/article/details/72353420" target="_blank" rel="noopener">博客</a>，作为卷积神经网络的一种特殊形式，它首先用三层“卷积—ReLU—池化—LRN”的结构提取特征，其中Local Response Normalization (LRN)是<a href="http://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks" target="_blank" rel="noopener">AlexNet</a>2012年首次提出来的，然后再搭建三个全连接层得到输出，具体结构见下图。</p>
-<img src="https://raw.githubusercontent.com/alpoise/alpoise.github.io/master/_plugins/jpg/AlexNet.png" width="80%" height="80%">
-<p>注意原始网络的最终输出是1000维的one-hot向量，对应着数据集是1000个标签，且网络在提取特征的时候都是分割成两两部分便于在两个GPU上计算，本文区别于原始网络的点在于最终输出是17维的one-hot且没有分割成两部分进行计算。</p>
-<p>本网络用到了CNN中的stride，padding，pooling，dropout等概念，此外一个技巧是在训练MLP加入L2惩罚有助于提高精度，参见Tensorlayer的<a href="https://github.com/tensorlayer/tensorlayer/blob/master/example/tutorial_cifar10.py" target="_blank" rel="noopener">说明文档</a>，网络部分的代码见<a href="https://github.com/alpoise/DeepLearning/blob/master/HW2/AlexNet.py" target="_blank" rel="noopener">AlexNet.py</a>.</p>
-<h3 id="训练方式"><a class="markdownIt-Anchor" href="#训练方式"></a> 训练方式</h3>
-<p>网络的训练就是分成batch训练，比较复杂的是加了很多summary以方便可视化，代码见<a href="https://github.com/alpoise/DeepLearning/blob/master/HW2/train.py" target="_blank" rel="noopener">train.py</a>.</p>
-<h2 id="tensorboard"><a class="markdownIt-Anchor" href="#tensorboard"></a> Tensorboard</h2>
-<p>Tensorboard的坑是始料未及的。基本的操作是在代码中加入summary，并tf.summary.Filewriter下来，这些网上的教程都有提到，但有两点没提到的需要注意：</p>
+        <p>This is the project in IPSW-TWFME 2018 conference. The problem is raised by Shenzhen Stock Exchange and can be found <a href="http://math.sufe.edu.cn/kyxm/main.htm" target="_blank" rel="noopener">here</a>. We omit the data and code here sine they are of little importance.</p>
+<p>Our main focus here is the model selection in cluster algorithms. The difficulty lies in the fact that the data is unlabelled, high-dimensional, sparse and hard to visualized. So we dig further into the data and perform the binary transformation to the original position matrix. By doing so, we emphasize the fund’s choices of stocks and make the visualisation much more easier.</p>
+<p>Then we define the overlap (OLP) for any two funds position vectors and derive two statistics from it. The OLP is just the inner product $ OLP = F_i  *  F_j $ and MOLP is the row maximum of OLP matrix, TOLP the row sum. Next we draw the picture of MOLP-TOLP：<br>
+<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/molp-tolp.png" alt="molp-tolp"><br>
+For the singular point in Line 2 we stretch out its fullname and find that this fund has its all share postion in Pingan Insurance which is held by over 700 funds. This enlightens us with the following two suggestions:</p>
 <ul>
-<li>现在不会自动弹出网页地址，需要自行在Chrome浏览器中输入http://localhost:6006。</li>
-<li>指令为在命令行中输入tensorboard --logdir [总结文件events的上层文件夹地址]。但是却一直报错，而错误的原因最后发现是自己的主机名字取得不好，导致events的后缀名是&quot;.alpoise’s_PC ”可能是单引号为汉字字符，也可能单引号本身就与字符串矛盾，总归把电脑改名为<strong>dormpc</strong>后顺利运行。</li>
+<li>OLP should be adjusted by the norm information</li>
+<li>Funds fumber for each stock may differ a lot</li>
 </ul>
-<h2 id="结果分析"><a class="markdownIt-Anchor" href="#结果分析"></a> 结果分析</h2>
-<p>我们训练了80个epoch，每30步在测试集上进行一次测试。由于是在本人的台式机上使用GPU GTX970训练的，所以80个epoch大致只需要15分钟。首先来看训练集上的表现：</p>
-<img src="https://raw.githubusercontent.com/alpoise/alpoise.github.io/master/_plugins/jpg/alextrain.png" width="70%" height="30%">
-<p>从loss的下降可以看到Adam优化器在本问题是十分有效的，但是样本内的准确度在1200步之后就几乎为1了，这很可能意味着过拟合。我们接着来看在测试集上的表现：</p>
-<img src="https://raw.githubusercontent.com/alpoise/alpoise.github.io/master/_plugins/jpg/alextest.png" width="65%" height="30%">
-<p>测试集上最终准确率只有**70%**左右，考虑到样本集容量非常有限，所以这个精度还是不错的。如果采用预训练给出的参数对模型初始化可以进一步提高预测力，但已经与本实验初衷有些远，暂且不表。此外，在实验过程中也有尝试对网络结构进行一些修改，如全连接的最后一层节点数是从1000到17等，效果并没有改观作为中间过程也就没有记录。</p>
-<h2 id="待解决项"><a class="markdownIt-Anchor" href="#待解决项"></a> 待解决项</h2>
-<p>变量总结的INFO对变量b3:0让修改为b3_0，summary name is illegal;</p>
+<h2 id="three-criteria"><a class="markdownIt-Anchor" href="#three-criteria"></a> Three Criteria</h2>
+<p>So we turn to adjust OLP into AOLP by dividing its L1 norm:</p>
+\begin{equation}
+AOLP_{i,j}= \frac{OLP_{i,j}}{\Vert F_1'\Vert _1}
+\end{equation}
+
+<p>and define</p>
+\begin{eqnarray}
+AOC = \sum_{1\leq i, j \leq n,i\neq j}^{} \frac{1_{(AOLP_{i,j}=AOLP_{j,i}=1)} * 1_{(L(F_i) = L(F_j))}}{\sum_{1\leq k,j\leq n, k\neq l}1_{(AOLP_{k,j}=AOLP_{j,k}=1)}} \\
+FDR = \sum_{1\leq i, j \leq n,i\neq j}^{} \frac{1_{(AOLP_{i,j}=AOLP_{j,i}=0)} * 1_{(L(F_i) = L(F_j))}}{\sum_{1\leq k,j\leq n, k\neq l}1_{(AOLP_{k,j}=AOLP_{j,k}=0)}}
+\end{eqnarray}
+
+<p>as our basis of the evaluation framework where $L() $ is the label map. These two critetia speaks for our two believes:</p>
 <ul>
-<li>对TF的变量名管理和tf.summary还不算会，还是照猫画虎的阶段;</li>
-<li>在尝试把dense层也用函数封装后，再调用变量L2_loss时没效果，猜测还是变量调用的问题;</li>
-<li>debug时修改图全局变量的方式，能节约loaddata的时间。</li>
+<li>Funds with the totally same position vector should be clustered into one category.</li>
+<li>Funds with totally the different position vectors should not be clustered into one category.</li>
 </ul>
-<p>关键是搞懂tf.Variable和tf.summary.</p>
+<p>Since the density method (DBSCAN) achieves 1 AOC and 1e-3 FDR, both competes against the spectral method, we, in the following steps, fixed the AOC to be 100% and plot the DBSCAN against its parameters.<br>
+<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/FDR1.png" alt="WechatIMG45"><br>
+As we can see, DBSCAN can achieves 100% AOC and 0% FDR by setting a small <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base"><span class="mord mathit">ϵ</span></span></span></span>  which means that there are too many clusters. It comes naturaly to reduce the cluster numbers by introduce a loss on it. So we define the measures of overlap as:</p>
+\begin{equation}
+OM(F_i,F_j) = 1- \frac{AOLP_{i,j} + AOLP_{j,i}}{2}
+\end{equation}
+
+<p>and calculate the maximal distance for nodes in the same cluster and the minimal distance of each cluster as the minimal distance between the nodes inside and outside.</p>
+\begin{equation}
+IM_k = max_{(i,j \in Label.k)} OM(F_i,F_j), \quad EM_k = min_{(i,j:\in Label.k)} OM(F_i,F_j)
+\end{equation}
+
+<p>So the loss is defined as the sum of the fraction of IM and EM</p>
+\begin{equation}
+Loss = \sum_{k}\frac{IM_k}{EM_k} \quad \text{for all clusters}
+\end{equation}
+
+<p>The plots is showed below<br>
+<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/FDR2.png" alt="WechatIMG44"><br>
+So we simply choose $ \epsilon = 0.3$ (the x-axis in the picture is wrong. should move a unit to the right).</p>
+<h2 id="divide-the-pools"><a class="markdownIt-Anchor" href="#divide-the-pools"></a> Divide the pools</h2>
+<p>Since the counts of funds holding each stocks vary a lot, we first have a view of the bar plot in sorted order:<br>
+<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/sum_stock.png" alt="WechatIMG46"><br>
+Intuitively, we want to divide the stock pool into two parts: left and right with Sum_hold at around 50. To choose the parametre more carefully, we take the difference,<br>
+<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/sum_stock_diff.png" alt="WechatIMG47"><br>
+So the critical vlaue is set to be 65. Stocks with sum_held less equal than 65 is splitted into the ‘Red Pool’ since they are usually red chips; The other stocks are therefore named ‘Blue Pool’.</p>
+<h2 id="final-plots"><a class="markdownIt-Anchor" href="#final-plots"></a> Final Plots</h2>
+<p>With the help of model selection, parametre tuning and stocks pool splitting, we finally come to our final display of cluster result:<br>
+<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/result.png" alt="屏幕快照 2018-05-14 19.35.43">The y-axis is the funds in cluster order and the x-axis is the stocks in Blue Pool and then Red Pool from left to right. We can see the short vertical lines like the rain drop meaning that the position vectors in a cluster is much alike. There is also an obvious difference between the blue and red. We can dig further into each groups. For the small groups having different companies, it’s sufficient to suspect them and for groups all having blue chips they may give rise to systemetic risk.</p>
+<h2 id="remark"><a class="markdownIt-Anchor" href="#remark"></a> Remark</h2>
+<ul>
+<li>the final result is more like clustering but not network analysis.</li>
+<li>our model selection differs from Silhouette in that we perform no scaling for cluster distance thus we may better discover the cheating pairs.</li>
+</ul>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者: <a href="http://xiizh.github.io">Zhang Xin</a>
-            <p>原文链接: <a href="http://xiizh.github.io/2018/05/06/AlexNet/">http://xiizh.github.io/2018/05/06/AlexNet/</a>
-            <p>发表日期: <a href="http://xiizh.github.io/2018/05/06/AlexNet/">May 6th 2018, 8:00:00</a>
+            <p>原文链接: <a href="http://xiizh.github.io/2018/05/14/IPSW_2018/">http://xiizh.github.io/2018/05/14/IPSW_2018/</a>
+            <p>发表日期: <a href="http://xiizh.github.io/2018/05/14/IPSW_2018/">May 14th 2018, 8:06:00</a>
             <p>版权声明: 本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -415,17 +444,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/05/14/IPSW_2018/" title= Model Selection for Clustering Algorithm >
-                    <div class="nextTitle">Model Selection for Clustering Algorithm</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/05/06/How_To_Build_A_Blog/" title= 部落格搭建指南 >
-                    <div class="prevTitle">部落格搭建指南</div>
+                <a href= "/2018/05/06/AlexNet/" title= AlexNet对花朵图像分类 >
+                    <div class="prevTitle">AlexNet对花朵图像分类</div>
                 </a>
             
         </li>
@@ -526,7 +550,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#cnn搭建"><span class="toc-number">1.</span> <span class="toc-text"> CNN搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据读入"><span class="toc-number">1.1.</span> <span class="toc-text"> 数据读入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#alexnet"><span class="toc-number">1.2.</span> <span class="toc-text"> AlexNet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#训练方式"><span class="toc-number">1.3.</span> <span class="toc-text"> 训练方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tensorboard"><span class="toc-number">2.</span> <span class="toc-text"> Tensorboard</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结果分析"><span class="toc-number">3.</span> <span class="toc-text"> 结果分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#待解决项"><span class="toc-number">4.</span> <span class="toc-text"> 待解决项</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#three-criteria"><span class="toc-number">1.</span> <span class="toc-text"> Three Criteria</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#divide-the-pools"><span class="toc-number">2.</span> <span class="toc-text"> Divide the pools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final-plots"><span class="toc-number">3.</span> <span class="toc-text"> Final Plots</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remark"><span class="toc-number">4.</span> <span class="toc-text"> Remark</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

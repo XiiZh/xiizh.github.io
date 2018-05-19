@@ -371,61 +371,41 @@ height:50vh;
     <article class="article-entry">
         <p>This is the project in IPSW-TWFME 2018 conference. The problem is raised by Shenzhen Stock Exchange and can be found <a href="http://math.sufe.edu.cn/kyxm/main.htm" target="_blank" rel="noopener">here</a>. We omit the data and code here sine they are of little importance.</p>
 <p>Our main focus here is the model selection in cluster algorithms. The difficulty lies in the fact that the data is unlabelled, high-dimensional, sparse and hard to visualized. So we dig further into the data and perform the binary transformation to the original position matrix. By doing so, we emphasize the fund’s choices of stocks and make the visualisation much more easier.</p>
-<p>Then we define the overlap (OLP) for any two funds position vectors and derive two statistics from it. The OLP is just the inner product $ OLP = F_i  *  F_j $ and MOLP is the row maximum of OLP matrix, TOLP the row sum. Next we draw the picture of MOLP-TOLP：<br>
-<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/molp-tolp.png" alt="molp-tolp"><br>
-For the singular point in Line 2 we stretch out its fullname and find that this fund has its all share postion in Pingan Insurance which is held by over 700 funds. This enlightens us with the following two suggestions:</p>
+<p>Then we define the overlap (OLP) for any two funds position vectors and derive two statistics from it. The OLP is just the inner product $ OLP = F_i  *  F_j $ and MOLP is the row maximum of OLP matrix, TOLP the row sum. Next we draw the picture of MOLP-TOLP：<br><img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/molp-tolp.png" alt="molp-tolp"><br>For the singular point in Line 2 we stretch out its fullname and find that this fund has its all share postion in Pingan Insurance which is held by over 700 funds. This enlightens us with the following two suggestions:</p>
 <ul>
-<li>OLP should be adjusted by the norm information</li>
+<li>OLP should be adjusted by the norm information </li>
 <li>Funds fumber for each stock may differ a lot</li>
 </ul>
-<h2 id="three-criteria"><a class="markdownIt-Anchor" href="#three-criteria"></a> Three Criteria</h2>
-<p>So we turn to adjust OLP into AOLP by dividing its L1 norm:</p>
+<h2 id="Three-Criteria"><a href="#Three-Criteria" class="headerlink" title="Three Criteria"></a>Three Criteria</h2><p>So we turn to adjust OLP into AOLP by dividing its L1 norm:</p>
+<script type="math/tex; mode=display">
 \begin{equation}
 AOLP_{i,j}= \frac{OLP_{i,j}}{\Vert F_1'\Vert _1}
-\end{equation}
-
-<p>and define</p>
+\end{equation}</script><p>and define </p>
+<script type="math/tex; mode=display">
 \begin{eqnarray}
 AOC = \sum_{1\leq i, j \leq n,i\neq j}^{} \frac{1_{(AOLP_{i,j}=AOLP_{j,i}=1)} * 1_{(L(F_i) = L(F_j))}}{\sum_{1\leq k,j\leq n, k\neq l}1_{(AOLP_{k,j}=AOLP_{j,k}=1)}} \\
 FDR = \sum_{1\leq i, j \leq n,i\neq j}^{} \frac{1_{(AOLP_{i,j}=AOLP_{j,i}=0)} * 1_{(L(F_i) = L(F_j))}}{\sum_{1\leq k,j\leq n, k\neq l}1_{(AOLP_{k,j}=AOLP_{j,k}=0)}}
-\end{eqnarray}
-
-<p>as our basis of the evaluation framework where $L() $ is the label map. These two critetia speaks for our two believes:</p>
+\end{eqnarray}</script><p>as our basis of the evaluation framework where $L() $ is the label map. These two critetia speaks for our two believes:</p>
 <ul>
 <li>Funds with the totally same position vector should be clustered into one category.</li>
 <li>Funds with totally the different position vectors should not be clustered into one category.</li>
 </ul>
-<p>Since the density method (DBSCAN) achieves 1 AOC and 1e-3 FDR, both competes against the spectral method, we, in the following steps, fixed the AOC to be 100% and plot the DBSCAN against its parameters.<br>
-<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/FDR1.png" alt="WechatIMG45"><br>
-As we can see, DBSCAN can achieves 100% AOC and 0% FDR by setting a small <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base"><span class="mord mathit">ϵ</span></span></span></span>  which means that there are too many clusters. It comes naturaly to reduce the cluster numbers by introduce a loss on it. So we define the measures of overlap as:</p>
+<p>Since the density method (DBSCAN) achieves 1 AOC and 1e-3 FDR, both competes against the spectral method, we, in the following steps, fixed the AOC to be 100% and plot the DBSCAN against its parameters.<br><img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/FDR1.png" alt="WechatIMG45"><br>As we can see, DBSCAN can achieves 100% AOC and 0% FDR by setting a small $\epsilon$  which means that there are too many clusters. It comes naturaly to reduce the cluster numbers by introduce a loss on it. So we define the measures of overlap as:</p>
+<script type="math/tex; mode=display">
 \begin{equation}
 OM(F_i,F_j) = 1- \frac{AOLP_{i,j} + AOLP_{j,i}}{2}
-\end{equation}
-
-<p>and calculate the maximal distance for nodes in the same cluster and the minimal distance of each cluster as the minimal distance between the nodes inside and outside.</p>
+\end{equation}</script><p>and calculate the maximal distance for nodes in the same cluster and the minimal distance of each cluster as the minimal distance between the nodes inside and outside.</p>
+<script type="math/tex; mode=display">
 \begin{equation}
 IM_k = max_{(i,j \in Label.k)} OM(F_i,F_j), \quad EM_k = min_{(i,j:\in Label.k)} OM(F_i,F_j)
-\end{equation}
-
-<p>So the loss is defined as the sum of the fraction of IM and EM</p>
+\end{equation}</script><p>So the loss is defined as the sum of the fraction of IM and EM</p>
+<script type="math/tex; mode=display">
 \begin{equation}
 Loss = \sum_{k}\frac{IM_k}{EM_k} \quad \text{for all clusters}
-\end{equation}
-
-<p>The plots is showed below<br>
-<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/FDR2.png" alt="WechatIMG44"><br>
-So we simply choose $ \epsilon = 0.3$ (the x-axis in the picture is wrong. should move a unit to the right).</p>
-<h2 id="divide-the-pools"><a class="markdownIt-Anchor" href="#divide-the-pools"></a> Divide the pools</h2>
-<p>Since the counts of funds holding each stocks vary a lot, we first have a view of the bar plot in sorted order:<br>
-<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/sum_stock.png" alt="WechatIMG46"><br>
-Intuitively, we want to divide the stock pool into two parts: left and right with Sum_hold at around 50. To choose the parametre more carefully, we take the difference,<br>
-<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/sum_stock_diff.png" alt="WechatIMG47"><br>
-So the critical vlaue is set to be 65. Stocks with sum_held less equal than 65 is splitted into the ‘Red Pool’ since they are usually red chips; The other stocks are therefore named ‘Blue Pool’.</p>
-<h2 id="final-plots"><a class="markdownIt-Anchor" href="#final-plots"></a> Final Plots</h2>
-<p>With the help of model selection, parametre tuning and stocks pool splitting, we finally come to our final display of cluster result:<br>
-<img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/result.png" alt="屏幕快照 2018-05-14 19.35.43">The y-axis is the funds in cluster order and the x-axis is the stocks in Blue Pool and then Red Pool from left to right. We can see the short vertical lines like the rain drop meaning that the position vectors in a cluster is much alike. There is also an obvious difference between the blue and red. We can dig further into each groups. For the small groups having different companies, it’s sufficient to suspect them and for groups all having blue chips they may give rise to systemetic risk.</p>
-<h2 id="remark"><a class="markdownIt-Anchor" href="#remark"></a> Remark</h2>
-<ul>
+\end{equation}</script><p>The plots is showed below<br><img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/FDR2.png" alt="WechatIMG44"><br>So we simply choose $ \epsilon = 0.3$ (the x-axis in the picture is wrong. should move a unit to the right). </p>
+<h2 id="Divide-the-pools"><a href="#Divide-the-pools" class="headerlink" title="Divide the pools"></a>Divide the pools</h2><p>Since the counts of funds holding each stocks vary a lot, we first have a view of the bar plot in sorted order:<br><img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/sum_stock.png" alt="WechatIMG46"><br>Intuitively, we want to divide the stock pool into two parts: left and right with Sum_hold at around 50. To choose the parametre more carefully, we take the difference,<br><img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/sum_stock_diff.png" alt="WechatIMG47"><br>So the critical vlaue is set to be 65. Stocks with sum_held less equal than 65 is splitted into the ‘Red Pool’ since they are usually red chips; The other stocks are therefore named ‘Blue Pool’.</p>
+<h2 id="Final-Plots"><a href="#Final-Plots" class="headerlink" title="Final Plots"></a>Final Plots</h2><p>With the help of model selection, parametre tuning and stocks pool splitting, we finally come to our final display of cluster result:<br><img src="https://raw.githubusercontent.com/XiiZh/Materials/master/IPSW-Plots/result.png" alt="屏幕快照 2018-05-14 19.35.43">The y-axis is the funds in cluster order and the x-axis is the stocks in Blue Pool and then Red Pool from left to right. We can see the short vertical lines like the rain drop meaning that the position vectors in a cluster is much alike. There is also an obvious difference between the blue and red. We can dig further into each groups. For the small groups having different companies, it’s sufficient to suspect them and for groups all having blue chips they may give rise to systemetic risk.</p>
+<h2 id="Remark"><a href="#Remark" class="headerlink" title="Remark"></a>Remark</h2><ul>
 <li>the final result is more like clustering but not network analysis.</li>
 <li>our model selection differs from Silhouette in that we perform no scaling for cluster distance thus we may better discover the cheating pairs.</li>
 </ul>
@@ -443,6 +423,11 @@ So the critical vlaue is set to be 65. Stocks with sum_held less equal than 65 i
     <!-- paginator  -->
     <ul class="post-paginator">
         <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2018/05/19/delta_hedging/" title= Delta Headging >
+                    <div class="nextTitle">Delta Headging</div>
+                </a>
             
         </li>
         <li class="previous">
@@ -550,7 +535,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#three-criteria"><span class="toc-number">1.</span> <span class="toc-text"> Three Criteria</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#divide-the-pools"><span class="toc-number">2.</span> <span class="toc-text"> Divide the pools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final-plots"><span class="toc-number">3.</span> <span class="toc-text"> Final Plots</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remark"><span class="toc-number">4.</span> <span class="toc-text"> Remark</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Three-Criteria"><span class="toc-number">1.</span> <span class="toc-text">Three Criteria</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Divide-the-pools"><span class="toc-number">2.</span> <span class="toc-text">Divide the pools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Final-Plots"><span class="toc-number">3.</span> <span class="toc-text">Final Plots</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Remark"><span class="toc-number">4.</span> <span class="toc-text">Remark</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -606,6 +591,8 @@ top:50vh;
     
     
     
+    
+    
     <div class="total-archive"> Total : 5 </div>
     
     <div class="post-archive">
@@ -615,6 +602,11 @@ top:50vh;
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/19</span><a class="archive-post-title" href= "/2018/05/19/delta_hedging/" >Delta Headging</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -634,20 +626,6 @@ top:50vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">05/05</span><a class="archive-post-title" href= "/2018/05/05/hello-world/" >Hello World</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2017 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">05/03</span><a class="archive-post-title" href= "/2017/05/03/delta_hedging/" >Testing Mathjax with Hexo</a>
         </li>
     
     </div>

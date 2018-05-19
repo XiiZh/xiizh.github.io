@@ -316,6 +316,32 @@
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/05/19/delta_hedging/" >
+                
+                    <span>Delta Headging</span>
+            </a>
+            <div class="abstract-content">
+                Binomial Tree设单期经济
+
+Method 1: covered call writing构建组合为 long $a_i+b_i$shares, short 1 call，根据无套利原则到期组合价值应当相等，从而得到
+
+\begin{equation}
+\Delta S_1^u - C_1^u = \Delta S_1^d - C_1^d \qquad \Rightarrow \Delta = \frac{C_1^u - C_1^d}{S_1^u - S_1^d},\quad C_0 =\Delta S_0 -  (\Delta S_1^u - C_1^u)e^{-rt}
+\e...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/05/19</span>
+                </div>
+                <!-- tags  -->
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/05/14/IPSW_2018/" >
                 
                     <span>Model Selection for Clustering Algorithm</span>
@@ -349,11 +375,8 @@ Our main focus here is the model selection in cluster algorithms. The difficulty
             </a>
             <div class="abstract-content">
                 本文基于Tensorflow使用ALexNet的网络结构实现了对oxflowers数据集上的花朵图像分类。
- CNN搭建
- 数据读入
-本部分目的是实现oxflowers的数据读入，并分割为训练集和测试集。从如下数据连接下载源数据并阅读数据说明。数据集包含1360张花朵的图片，按顺序每80个为一类，总计17类。首先要对数据集分割并加上标签，之后用PIL包的Image函数将图片读为张量，根据数据集中的datasplits.mat将数据集分割为训练集和测试集，最后定义shuffle的规则方便分批训练。代码以及详尽的注释在LoadData.py
- AlexNet
-本部分着重介绍AlexNet网络...
+CNN搭建数据读入本部分目的是实现oxflowers的数据读入，并分割为训练集和测试集。从如下数据连接下载源数据并阅读数据说明。数据集包含1360张花朵的图片，按顺序每80个为一类，总计17类。首先要对数据集分割并加上标签，之后用PIL包的Image函数将图片读为张量，根据数据集中的datasplits.mat将数据集分割为训练集和测试集，最后定义shuffle的规则方便分批训练。代码以及详尽的注释在LoadData.py
+AlexNet本部分着重介绍AlexNet网络的结构。Al...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
@@ -408,12 +431,10 @@ Our main focus here is the model selection in cluster algorithms. The difficulty
             </a>
             <div class="abstract-content">
                 Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
- Quick Start
- Create a new post
-1$ hexo new "My New Post"
+Quick StartCreate a new post1$ hexo new "My New Post"
 More info: Writing
- Run server
-1$ hexo serve...
+Run server1$ hexo server
+More...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
@@ -554,6 +575,8 @@ More info: Writing
     
     
     
+    
+    
     <div class="total-archive"> Total : 5 </div>
     
     <div class="post-archive">
@@ -563,6 +586,11 @@ More info: Writing
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/19</span><a class="archive-post-title" href= "/2018/05/19/delta_hedging/" >Delta Headging</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -582,20 +610,6 @@ More info: Writing
     
         <li class="archive-post-item">
             <span class="archive-post-date">05/05</span><a class="archive-post-title" href= "/2018/05/05/hello-world/" >Hello World</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2017 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">05/03</span><a class="archive-post-title" href= "/2017/05/03/delta_hedging/" >Testing Mathjax with Hexo</a>
         </li>
     
     </div>
